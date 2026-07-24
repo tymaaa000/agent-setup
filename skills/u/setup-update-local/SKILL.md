@@ -57,11 +57,22 @@ Present a clear summary:
 - Every new commit listed with hash and Chinese description
 - Every file that will be changed, with `+` for new and `-` for removed
 
-Then ask ALL questions and wait for answers:
-1. "是否合并这些更新？" — user may say yes to all, or pick specific commits
-2. "确认同步到 .pi/agent/？" — final go/no-go before touching runtime files
+Then ask using MULTIPLE CHOICE format and wait for answers.
+Only after the user answers all questions, move to Step 4.
 
-Only after the user explicitly says yes, move to Step 4.
+**Question format (MUST use this exact template):**
+
+```
+1. 是否合并上游更新？
+   A) 全部合并
+   B) 仅 pi-setup
+   C) 仅 agent-setup
+   D) 都不合并
+
+2. 合并后是否同步到运行时(.pi/agent)？
+   A) 是
+   B) 否
+```
 
 ## Step 4: Sync to .pi/agent (runtime)
 

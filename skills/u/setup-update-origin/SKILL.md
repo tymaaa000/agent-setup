@@ -33,12 +33,26 @@ Present a clear summary:
 - Every changed file listed line by line
 - Every unpushed commit with its message
 
-Then ask ALL three questions and wait for answers:
-1. "哪些文件需要上传？" — let user pick specific files or all
-2. "提交信息用什么？" — let user write their own message
-3. "确认推送吗？" — final go/no-go
+Then ask using MULTIPLE CHOICE format and wait for answers. 
+Only after the user answers all questions, move to Step 3.
 
-Only after the user explicitly says yes, move to Step 3.
+**Question format (MUST use this exact template):**
+
+```
+1. 上传哪些文件？
+   A) 全部
+   B) 仅 pi-setup
+   C) 仅 agent-setup
+   D) 手动选择（列出文件编号）
+
+2. 提交信息用什么？
+   A) [自动生成: feat(xxx): xxx]
+   B) 自定义（请输入）
+
+3. 确认推送？
+   A) 是
+   B) 否
+```
 
 ## Step 3: Stage and Commit
 
