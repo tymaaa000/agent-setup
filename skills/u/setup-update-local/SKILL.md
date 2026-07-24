@@ -57,37 +57,29 @@ Present a clear summary:
 - Every new commit listed with hash and Chinese description
 - Every file that will be changed, with `+` for new and `-` for removed
 
-Then ask using MULTIPLE CHOICE format and wait for answers.
-Only after the user answers all questions, move to Step 4.
+### Question Construction Rules
 
-**Question format (MUST use this exact template):**
+**DYNAMIC OPTIONS — never show dead options.**
 
-```
-1. 是否合并上游更新？
-   A) 全部合并
-   B) 仅 pi-setup
-   C) 仅 agent-setup
-   D) 都不合并
+**Q1: 是否合并上游更新？**
+- Both have updates → A) 全部合并  B) 仅 pi-setup  C) 仅 agent-setup  D) 都不合并
+- Only pi-setup → A) 合并  B) 不合并
+- Only agent-setup → A) 合并  B) 不合并
+- Neither → report "已是最新" and STOP, do not ask questions
 
-2. 合并后是否同步到运行时(.pi/agent)？
-   A) 是
-   B) 否
-```
+**Q2: 合并后是否同步到运行时(.pi/agent)？**
+- Always: A) 是  B) 否
 
-**User answer format: space-separated, one letter per question in order.**
+### Answer Format
 
-```
-Examples:
-  A A   → Q1=A Q2=A
-  D -   → Q1=D Q2=skip
-  B A   → Q1=B Q2=A
-```
+At the end of the questions, always append this hint:
+
+> 💡 按顺序空格分隔回答，如 `A A`。跳过用 `-`。
 
 Parse rules:
-- Split user input by spaces: `A A` → `["A", "A"]`
-- Map by position: first letter → Q1, second → Q2
-- `-` means skip that question
-- If user provides fewer answers than questions, ask for the remaining ones
+- Split by spaces, map by position: first → Q1, second → Q2
+- `-` means skip
+- Fewer answers than questions → ask remaining
 
 ## Step 4: Sync to .pi/agent (runtime)
 

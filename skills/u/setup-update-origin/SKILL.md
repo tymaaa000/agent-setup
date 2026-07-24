@@ -30,44 +30,36 @@ git log --oneline origin/main..HEAD
 
 Present a clear summary:
 - Which repo has changes (pi-setup / agent-setup / both)
-- Every changed file listed line by line
+- Every changed file listed in a table
 - Every unpushed commit with its message
 
-Then ask using MULTIPLE CHOICE format and wait for answers.
-Only after the user answers all questions, move to Step 3.
+### Question Construction Rules
 
-**Question format (MUST use this exact template):**
+**DYNAMIC OPTIONS — never show dead options.**
 
-```
-1. 上传哪些文件？
-   A) 全部
-   B) 仅 pi-setup
-   C) 仅 agent-setup
+**Q1: 上传哪些文件？**
+- Both repos have changes → A) 全部  B) 仅 pi-setup  C) 仅 agent-setup
+- Only pi-setup has changes → A) 是（仅 pi-setup）  B) 否
+- Only agent-setup has changes → A) 是（仅 agent-setup）  B) 否
+- Neither has changes → report "无改动" and STOP, do not ask questions
 
-2. 提交信息用什么？
-   A) [自动生成]
-   B) 自定义
+**Q2: 提交信息用什么？**
+- Always: A) 自动生成（写清具体内容，如 "feat: add xxx"）  B) 自定义
 
-3. 确认推送？
-   A) 是
-   B) 否
-```
+**Q3: 确认推送？**
+- Always: A) 是  B) 否
 
-**User answer format: space-separated, one letter per question in order.**
+### Answer Format
 
-```
-Examples:
-  A A A   → Q1=A Q2=A Q3=A
-  C B A   → Q1=C Q2=B Q3=A
-  A - A   → Q1=A Q2=skip Q3=A
-```
+At the end of the questions, always append this hint:
+
+> 💡 按顺序空格分隔回答，如 `A A A`。跳过用 `-`。
 
 Parse rules:
-- Split user input by spaces: `A A A` → `["A", "A", "A"]`
-- Map by position: first letter → Q1, second → Q2, third → Q3
-- `-` means skip that question
-- If user provides fewer answers than questions, ask for the remaining ones
-- If Q2 is B (custom), ask for the commit message separately
+- Split by spaces, map by position: first → Q1, second → Q2, third → Q3
+- `-` means skip
+- Fewer answers than questions → ask remaining
+- Q2=B → ask commit message separately
 
 ## Step 3: Stage and Commit
 
