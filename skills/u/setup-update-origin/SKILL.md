@@ -24,15 +24,25 @@ git status --short
 git log --oneline origin/main..HEAD
 ```
 
-## Step 2: Report to User
+## Step 2: Report to User — STOP HERE
 
-List all changed files and unpushed commits for each repo. Ask the user:
-- What commit message to use
-- Whether to push both repos or just one
+**CRITICAL: Do NOT proceed beyond this step without explicit user confirmation.**
+
+Present a clear summary:
+- Which repo has changes (pi-setup / agent-setup / both)
+- Every changed file listed line by line
+- Every unpushed commit with its message
+
+Then ask ALL three questions and wait for answers:
+1. "哪些文件需要上传？" — let user pick specific files or all
+2. "提交信息用什么？" — let user write their own message
+3. "确认推送吗？" — final go/no-go
+
+Only after the user explicitly says yes, move to Step 3.
 
 ## Step 3: Stage and Commit
 
-If there are unstaged changes:
+If there are unstaged changes that the user approved:
 
 ```bash
 cd <repo_path>

@@ -48,9 +48,20 @@ Pull from fork first:
 git pull origin main
 ```
 
-## Step 3: Report to User
+## Step 3: Report to User — STOP HERE
 
-Present a table of new commits with brief Chinese descriptions. Ask the user: "是否合并这些更新？"
+**CRITICAL: Do NOT proceed beyond this step without explicit user confirmation.**
+
+Present a clear summary:
+- Which repo has upstream updates (pi-setup / agent-setup / both)
+- Every new commit listed with hash and Chinese description
+- Every file that will be changed, with `+` for new and `-` for removed
+
+Then ask ALL questions and wait for answers:
+1. "是否合并这些更新？" — user may say yes to all, or pick specific commits
+2. "确认同步到 .pi/agent/？" — final go/no-go before touching runtime files
+
+Only after the user explicitly says yes, move to Step 4.
 
 ## Step 4: Sync to .pi/agent (runtime)
 
