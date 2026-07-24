@@ -33,7 +33,7 @@ Present a clear summary:
 - Every changed file listed line by line
 - Every unpushed commit with its message
 
-Then ask using MULTIPLE CHOICE format and wait for answers. 
+Then ask using MULTIPLE CHOICE format and wait for answers.
 Only after the user answers all questions, move to Step 3.
 
 **Question format (MUST use this exact template):**
@@ -43,16 +43,31 @@ Only after the user answers all questions, move to Step 3.
    A) 全部
    B) 仅 pi-setup
    C) 仅 agent-setup
-   D) 手动选择（列出文件编号）
 
 2. 提交信息用什么？
-   A) [自动生成: feat(xxx): xxx]
-   B) 自定义（请输入）
+   A) [自动生成]
+   B) 自定义
 
 3. 确认推送？
    A) 是
    B) 否
 ```
+
+**User answer format: space-separated, one letter per question in order.**
+
+```
+Examples:
+  A A A   → Q1=A Q2=A Q3=A
+  C B A   → Q1=C Q2=B Q3=A
+  A - A   → Q1=A Q2=skip Q3=A
+```
+
+Parse rules:
+- Split user input by spaces: `A A A` → `["A", "A", "A"]`
+- Map by position: first letter → Q1, second → Q2, third → Q3
+- `-` means skip that question
+- If user provides fewer answers than questions, ask for the remaining ones
+- If Q2 is B (custom), ask for the commit message separately
 
 ## Step 3: Stage and Commit
 

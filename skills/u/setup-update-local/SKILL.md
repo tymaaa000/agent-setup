@@ -74,6 +74,21 @@ Only after the user answers all questions, move to Step 4.
    B) 否
 ```
 
+**User answer format: space-separated, one letter per question in order.**
+
+```
+Examples:
+  A A   → Q1=A Q2=A
+  D -   → Q1=D Q2=skip
+  B A   → Q1=B Q2=A
+```
+
+Parse rules:
+- Split user input by spaces: `A A` → `["A", "A"]`
+- Map by position: first letter → Q1, second → Q2
+- `-` means skip that question
+- If user provides fewer answers than questions, ask for the remaining ones
+
 ## Step 4: Sync to .pi/agent (runtime)
 
 After user confirms, copy files from the repo to the `.pi/agent/` runtime directory.
