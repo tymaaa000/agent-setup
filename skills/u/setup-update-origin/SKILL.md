@@ -29,37 +29,52 @@ git log --oneline origin/main..HEAD
 **CRITICAL: Do NOT proceed beyond this step without explicit user confirmation.**
 
 Present a clear summary:
-- Which repo has changes (pi-setup / agent-setup / both)
-- Every changed file listed in a table
+- Every changed file listed in a table with repo label
 - Every unpushed commit with its message
 
-### Question Construction Rules
-
-**DYNAMIC OPTIONS — never show dead options.**
+### Dynamic Question Construction
 
 **Q1: 上传哪些文件？**
-- Both repos have changes → A) 全部  B) 仅 pi-setup  C) 仅 agent-setup
-- Only pi-setup has changes → A) 是（仅 pi-setup）  B) 否
-- Only agent-setup has changes → A) 是（仅 agent-setup）  B) 否
-- Neither has changes → report "无改动" and STOP, do not ask questions
+
+List EVERY changed file as an option with its function description:
+- Read each file and extract a one-line Chinese summary of what it does
+- For SKILL.md: read the `description` field from frontmatter
+- For other files: read first meaningful comment or header line
+- Format: `B) [repo] file/path — 功能描述`
+
+Plus "A) 全部" at the top.
+
+If zero changed files → report "无改动" and STOP.
 
 **Q2: 提交信息用什么？**
-- Always: A) 自动生成（写清具体内容，如 "feat: add xxx"）  B) 自定义
+
+```
+2. 提交信息用什么？
+   A) [自动生成: feat(xxx): xxx]
+   B) 自定义
+```
 
 **Q3: 确认推送？**
-- Always: A) 是  B) 否
 
-### Answer Format
+```
+3. 确认推送？
+   A) 是
+   B) 否
+```
 
-At the end of the questions, always append this hint:
+### Answer Format Hint
 
-> 💡 按顺序空格分隔回答，如 `A A A`。跳过用 `-`。
+Always append:
 
-Parse rules:
-- Split by spaces, map by position: first → Q1, second → Q2, third → Q3
-- `-` means skip
-- Fewer answers than questions → ask remaining
-- Q2=B → ask commit message separately
+> 💡 多选用逗号分隔（如 `B,C`），题间用空格（如 `B,C A A`）。跳过用 `-`。
+
+### Parse Rules
+
+- Split by spaces to get per-question answers
+- Q1: split by comma to get file selection. `A` = all, `B,C` = specific files, `-` = skip
+- Q2: single letter, A=auto B=custom. If B, ask for message separately
+- Q3: single letter, A=yes B=no
+- If too few answers, ask for remaining questions only
 
 ## Step 3: Stage and Commit
 

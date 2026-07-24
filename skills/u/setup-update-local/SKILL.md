@@ -57,29 +57,36 @@ Present a clear summary:
 - Every new commit listed with hash and Chinese description
 - Every file that will be changed, with `+` for new and `-` for removed
 
-### Question Construction Rules
-
-**DYNAMIC OPTIONS — never show dead options.**
+### Dynamic Question Construction
 
 **Q1: 是否合并上游更新？**
+
+List every new commit with its changed files, then offer options based on which repos have updates:
+
 - Both have updates → A) 全部合并  B) 仅 pi-setup  C) 仅 agent-setup  D) 都不合并
 - Only pi-setup → A) 合并  B) 不合并
 - Only agent-setup → A) 合并  B) 不合并
-- Neither → report "已是最新" and STOP, do not ask questions
+- Neither → report "已是最新" and STOP
 
 **Q2: 合并后是否同步到运行时(.pi/agent)？**
-- Always: A) 是  B) 否
 
-### Answer Format
+```
+2. 合并后是否同步到运行时？
+   A) 是
+   B) 否
+```
 
-At the end of the questions, always append this hint:
+### Answer Format Hint
 
-> 💡 按顺序空格分隔回答，如 `A A`。跳过用 `-`。
+Always append:
 
-Parse rules:
-- Split by spaces, map by position: first → Q1, second → Q2
+> 💡 空格分隔回答，如 `A A`。跳过用 `-`。
+
+### Parse Rules
+
+- Split by spaces, map by position
 - `-` means skip
-- Fewer answers than questions → ask remaining
+- Too few answers → ask remaining
 
 ## Step 4: Sync to .pi/agent (runtime)
 
