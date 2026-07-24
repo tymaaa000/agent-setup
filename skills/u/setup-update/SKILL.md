@@ -13,6 +13,8 @@ Two modes:
 
 ## Path Resolution
 
+> Note: `{VAR}` below are substitution placeholders — replace with actual paths before running.
+
 This skill file is at `{PI_HOME}/.pi/agent/skills/u/setup-update/SKILL.md`.
 Derive `PI_HOME` by going up 4 levels from this file's directory.
 
@@ -103,13 +105,13 @@ git merge upstream/$BRANCH || { echo "❌ 合并冲突，请手动解决后重�
 
 Sync files from repos to `{RUNTIME}`.
 
-**pi-setup sync — whitelist approach:**
+**pi-setup sync — copy all except protected:**
 
 ```bash
 SRC="{PI_SETUP}/agent"
 DST="{RUNTIME}"
 
-# Protected files — never overwrite these in DST
+# Protected files — never overwrite in DST
 PROTECTED="settings.json pi-websearch.json auth.json trust.json models-store.json"
 
 # Copy each top-level item from SRC to DST, skipping protected
@@ -139,9 +141,10 @@ rm -rf "{RUNTIME}/skills"
 cp -r "{AGENT_SETUP}/skills" "{RUNTIME}/skills" && echo "✅ 同步 skills"
 ```
 
-**settings.json check:**
+**settings.json comparison:**
 
-If upstream `settings.json` differs from runtime `settings.json`, show diff and ask: "上游 settings.json 有变化，是否合并？A) 合并  B) 跳过"
+Compare `{PI_SETUP}/agent/settings.json` (new) vs `{RUNTIME}/settings.json` (current).
+If they differ, show the diff and ask: "上游 settings.json 有变化，是否合并？A) 合并  B) 跳过"
 
 ### Step L6: Verify
 
@@ -176,13 +179,23 @@ cd {PI_SETUP}
 echo "=== pi-setup ==="
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 git status --short || echo "❌ git status 失败"
-git log --oneline origin/$BRANCH..HEAD 2>/dev/null || true
+echo "--- 未推送提交 ---"
+UNPUSHED=$(git log --oneline origin/$BRANCH..HEAD 2>/dev/null)
+if [ -n "$UNPUSHED" ]; then
+  echo "$UNPUSHED"
+  echo "(以上提交已在本地但未推送到 fork)"
+fi
 
 cd {AGENT_SETUP}
 echo "=== agent-setup ==="
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 git status --short || echo "❌ git status 失败"
-git log --oneline origin/$BRANCH..HEAD 2>/dev/null || true
+echo "--- 未推送提交 ---"
+UNPUSHED=$(git log --oneline origin/$BRANCH..HEAD 2>/dev/null)
+if [ -n "$UNPUSHED" ]; then
+  echo "$UNPUSHED"
+  echo "(以上提交已在本地但未推送到 fork)"
+fi
 ```
 
 ### Step O2: Report — STOP HERE
