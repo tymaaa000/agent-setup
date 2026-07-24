@@ -175,17 +175,11 @@ Zero changes → "无改动" and STOP.
    B) 自定义
 ```
 
-**Q3: 确认推送？**
+回答即确认提交+推送。
 
-```
-3. 确认推送？
-   A) 是
-   B) 否
-```
+> 💡 多选用逗号分隔（如 `B,C`），题间用空格（如 `B,C A`）。跳过用 `-`。
 
-> 💡 多选用逗号分隔（如 `B,C`），题间用空格（如 `B,C A A`）。跳过用 `-`。
-
-Parse: split by spaces. Q1 split by comma (`A`=all, `B,C`=specific). Q2 `A`=auto `B`=custom→ask message. Q3 `A`=yes.
+Parse: split by spaces. Q1 split by comma (`A`=all, `B,C`=specific). Q2 `A`=auto `B`=custom→ask message.
 
 ### Step O3: Stage and Commit
 
