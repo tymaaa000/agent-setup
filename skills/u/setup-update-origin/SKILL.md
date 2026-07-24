@@ -62,9 +62,9 @@ If zero changed files → report "无改动" and STOP.
    B) 否
 ```
 
-### Answer Format Hint
+### Answer Format Hint — ALWAYS SHOW THIS
 
-Always append:
+**MUST append this hint after EVERY question block, no exceptions:**
 
 > 💡 多选用逗号分隔（如 `B,C`），题间用空格（如 `B,C A A`）。跳过用 `-`。
 
